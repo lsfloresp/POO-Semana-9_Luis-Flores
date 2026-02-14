@@ -2,7 +2,7 @@ from modelos.producto import Producto
 from servicios.inventario import Inventario
 
 def mostrar_menu():
-    print("\n===== SISTEMA DE INVENTARIOS =====")
+    print("\n  SISTEMA DE INVENTARIOS ")
     print("1. Añadir producto")
     print("2. Eliminar producto")
     print("3. Actualizar producto")
@@ -19,7 +19,7 @@ def main():
 
         if opcion == "1":
             try:
-                id_p = int(input("ID: "))
+                id_p = input("ID: ")
                 nombre = input("Nombre: ")
                 cantidad = int(input("Cantidad: "))
                 precio = float(input("Precio: "))
@@ -31,11 +31,11 @@ def main():
                 print("Ingrese valores válidos.")
 
         elif opcion == "2":
-            id_p = int(input("Ingrese ID a eliminar: "))
+            id_p = input("Ingrese ID a eliminar: ")
             inventario.eliminar_producto(id_p)
 
         elif opcion == "3":
-            id_p = int(input("ID del producto: "))
+            id_p = input("ID del producto: ")
             cantidad = input("Nueva cantidad (enter para omitir): ")
             precio = input("Nuevo precio (enter para omitir): ")
 
