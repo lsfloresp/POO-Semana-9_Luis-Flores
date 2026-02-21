@@ -31,10 +31,10 @@ class Inventario:
                             )
                             self.productos.append(producto)
                         except ValueError:
-                            print("⚠ Línea corrupta ignorada:", linea)
+                            print("Línea corrupta ignorada:", linea)
 
         except PermissionError:
-            print("❌ No hay permisos para leer el archivo.")
+            print("No hay permisos para leer el archivo.")
 
     # GUARDAR EN ARCHIVO
 
@@ -46,9 +46,9 @@ class Inventario:
                     f.write(linea)
 
         except PermissionError:
-            print("❌ No hay permisos para escribir en el archivo.")
+            print("No hay permisos para escribir en el archivo.")
         except Exception as e:
-            print("❌ Error inesperado:", e)
+            print("Error inesperado:", e)
 
 
     # Añadir producto validando ID único
