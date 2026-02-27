@@ -100,6 +100,14 @@ class Inventario:
                 resultados.append(p)
         return resultados
 
+    # Busca un producto usando acceso directo al diccionario
+    def buscar_por_id(self, id_producto):
+
+        if id_producto in self.productos:
+            return self.productos[id_producto]  # Retorna el producto si existe
+        else:
+            return None
+
     # Mostrar todo el inventario
     def mostrar_inventario(self):
         if not self.productos:

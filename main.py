@@ -3,12 +3,13 @@ from servicios.inventario import Inventario
 
 def mostrar_menu():
     print("\n  SISTEMA DE INVENTARIOS ")
-    print("1. Añadir producto")
-    print("2. Eliminar producto")
-    print("3. Actualizar producto")
-    print("4. Buscar producto")
-    print("5. Listar inventario")
-    print("6. Salir")
+    print("1. ➕ Añadir producto")
+    print("2. 🗑️ Eliminar producto")
+    print("3. ✏️ Actualizar producto")
+    print("4. 🔍 Buscar producto")
+    print("5. 🔎 Buscar producto por nombre")
+    print("6. 📋 Mostrar inventario")
+    print("7. 🚪 Salir")
 
 def main():
     inventario = Inventario()
@@ -45,6 +46,16 @@ def main():
             inventario.actualizar_producto(id_p, nueva_cantidad, nuevo_precio)
 
         elif opcion == "4":
+            id_buscar = input("Ingrese el ID del producto: ")
+            producto = inventario.buscar_por_id(id_buscar)
+
+            if producto:
+                print("✅ Producto encontrado:")
+                print(producto)
+            else:
+                print("❌ Producto no encontrado.")
+
+        elif opcion == "5":
             nombre = input("Nombre a buscar: ")
             resultados = inventario.buscar_producto(nombre)
 
@@ -54,10 +65,10 @@ def main():
             else:
                 print("No se encontraron productos.")
 
-        elif opcion == "5":
+        elif opcion == "6":
             inventario.mostrar_inventario()
 
-        elif opcion == "6":
+        elif opcion == "7":
             print("Saliendo del sistema...")
             break
 
