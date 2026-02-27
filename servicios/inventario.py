@@ -5,7 +5,7 @@ from modelos.producto import Producto
 
 class Inventario:
     def __init__(self, archivo="inventario.txt"):
-        self.productos = []
+        self.productos = {} #Cambio a diccionario
         self.archivo = archivo
         self.cargar_desde_archivo()
 
@@ -29,7 +29,7 @@ class Inventario:
                                 int(cantidad),
                                 float(precio)
                             )
-                            self.productos.append(producto)
+                            self.productos[id_p]=(producto) # Diccionario donde la clave es el ID y el valor es el objeto Producto
                         except ValueError:
                             print("Línea corrupta ignorada:", linea)
 
@@ -41,7 +41,7 @@ class Inventario:
     def guardar_en_archivo(self):
         try:
             with open(self.archivo, "w", encoding="utf-8") as f:
-                for p in self.productos:
+                for p in self.productos.values(): # Recorre los valores del diccionario (objetos Producto)
                     linea = f"{p.get_id()};{p.get_nombre()};{p.get_cantidad()};{p.get_precio()}\n"
                     f.write(linea)
 
@@ -50,44 +50,52 @@ class Inventario:
         except Exception as e:
             print("Error inesperado:", e)
 
-
-    # Añadir producto validando ID único
+    # Añade un nuevo producto al inventario utilizando el ID como clave del diccionario.
+    # Se valida que el ID no exista para evitar duplicados.
     def agregar_producto(self, producto):
-        for p in self.productos:
-            if p.get_id() == producto.get_id():
-                print("El ID ya existe.")
-                return
-        self.productos.append(producto)
+
+        if producto.get_id() in self.productos:
+            print("El ID ya existe.")
+            return
+
+        self.productos[producto.get_id()] = producto # Inserta el producto usando su ID como clave
         self.guardar_en_archivo()
         print("Producto agregado correctamente.")
 
-    # Eliminar por ID
+    # Elimina un producto del inventario utilizando su ID como clave del diccionario.
+    # Se verifica que el ID exista antes de eliminarlo.
     def eliminar_producto(self, id_producto):
-        for p in self.productos:
-            if p.get_id() == id_producto:
-                self.productos.remove(p)
-                self.guardar_en_archivo()
-                print("Producto eliminado.")
-                return
-        print("Producto no encontrado.")
 
-    # Actualizar cantidad o precio
+        if id_producto in self.productos:
+            del self.productos[id_producto] # Elimina el producto accediendo directamente por su ID
+            self.guardar_en_archivo()
+            print("Producto eliminado.")
+        else:
+            print("Producto no encontrado.")
+
+    # Actualiza la cantidad y/o el precio de un producto usando su ID como clave.
+    # Se accede directamente al diccionario para modificar el objeto Producto.
     def actualizar_producto(self, id_producto, nueva_cantidad=None, nuevo_precio=None):
-        for p in self.productos:
-            if p.get_id() == id_producto:
-                if nueva_cantidad is not None:
-                    p.set_cantidad(nueva_cantidad)
-                if nuevo_precio is not None:
-                    p.set_precio(nuevo_precio)
-                self.guardar_en_archivo()
-                print("Producto actualizado.")
-                return
-        print("Producto no encontrado.")
+
+        if id_producto in self.productos:
+
+            producto = self.productos[id_producto] # Acceso directo al producto mediante su ID
+
+            if nueva_cantidad is not None:
+                producto.set_cantidad(nueva_cantidad) # Actualiza la cantidad si se proporciona un nuevo valor
+
+            if nuevo_precio is not None:
+                producto.set_precio(nuevo_precio) # Actualiza el precio si se proporciona un nuevo valor
+
+            self.guardar_en_archivo()
+            print("Producto actualizado.")
+        else:
+            print("Producto no encontrado.")
 
     # Buscar por nombre (parcial)
     def buscar_producto(self, nombre):
         resultados = []
-        for p in self.productos:
+        for p in self.productos.values(): # Recorre los objetos Producto almacenados en el diccionario
             if nombre.lower() in p.get_nombre().lower():
                 resultados.append(p)
         return resultados
@@ -97,5 +105,5 @@ class Inventario:
         if not self.productos:
             print("Inventario vacío.")
             return
-        for p in self.productos:
+        for p in self.productos.values(): # Recorre los objetos Producto almacenados en el diccionario
             print(p)
